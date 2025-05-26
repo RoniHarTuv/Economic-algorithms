@@ -1,8 +1,6 @@
 # Ex3_question5__Roni_HarTuv
-
 import cvxpy
 import numpy as np
-
 """
 Computes the allocation by maximizing the sum of the weighted logs of the utilities.
 """
@@ -10,7 +8,6 @@ def compute_allocation(preferences_matrix, budgets):
     # Errors checking
     if len(preferences_matrix) != len(budgets):
         raise ValueError("Error- Number of players not match the number of budgets")
-
     for row in preferences_matrix:
         for value in row:
             if value < 0:
@@ -20,7 +17,6 @@ def compute_allocation(preferences_matrix, budgets):
     num_players = len(preferences_matrix)
     num_resources = len(preferences_matrix[0])
     x = cvxpy.Variable((num_resources, num_players))
-
     # Set up each player's utility based on their preferences
     for i in range(num_players):
         utility_i = 0
@@ -28,7 +24,6 @@ def compute_allocation(preferences_matrix, budgets):
             utility_i += x[j, i] * preferences_matrix[i][j]
         # Weight the log utility by the player's budget
         utilities.append(budgets[i] * cvxpy.log(utility_i))
-
     # Define constraints:
     constraints =[]
     for j in range(num_resources):
@@ -60,10 +55,7 @@ def compute_prices(preferences_matrix, allocation, budgets):
                     price = (budgets[i] * preferences_matrix[i][r]) / total_utility #based on the proof from the slides.
                     break
         prices.append(price)
-
-
     return prices
-
 
 """
     Computes the competitive equilibrium given a matrix of preferences and budgets.
@@ -73,7 +65,7 @@ def compute_prices(preferences_matrix, allocation, budgets):
 def competitive_equilibrium(preferences_matrix, budgets):
 
     """
-    #Test1 - the example we saw in the class.
+    #Test1 - the example from the class.
     >>> allocation1, prices1 = competitive_equilibrium([[8, 4, 2],[2, 6, 5]],[60,40])
     >>> np.round(allocation1,2)
     array([[1. , 0. ],
@@ -134,7 +126,6 @@ def competitive_equilibrium(preferences_matrix, budgets):
 
 def main():
     return
-
 
 if __name__ == "__main__":
     import doctest
